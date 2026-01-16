@@ -9,9 +9,7 @@ public class Dish {
     private DishTypeEnum dishType;
     private List<Ingredient> ingredients;
 
-    public Dish() {
-        this.ingredients = new ArrayList<>();
-    }
+    public Dish() { this.ingredients = new ArrayList<>(); }
 
     public Dish(Integer id, String name, DishTypeEnum dishType, List<Ingredient> ingredients) {
         this.id = id;
@@ -30,20 +28,22 @@ public class Dish {
     public void setDishType(DishTypeEnum dishType) { this.dishType = dishType; }
 
     public List<Ingredient> getIngredients() { return ingredients; }
+
     public void setIngredients(List<Ingredient> ingredients) {
-        if (ingredients == null) {
-            this.ingredients = new ArrayList<>();
-            return;
+        if (ingredients == null) this.ingredients = new ArrayList<>();
+        else {
+            for (Ingredient i : ingredients) i.setDish(this);
+            this.ingredients = ingredients;
         }
-        for (Ingredient ing : ingredients) {
-            ing.setDish(this);
-        }
-        this.ingredients = ingredients;
     }
 
-    public double getDishPrice() {
+    public double getDishCost() {
         double total = 0;
-        for (Ingredient ing : ingredients) total += ing.getPrice();
+        for (Ingredient i : ingredients) {
+            if (i.getRequiredQuantity() == null) throw new RuntimeException(
+                    "Quantité requise inconnue pour l'ingrédient " + i.getName());
+            total += i.getPrice() * i.getRequiredQuantity();
+        }
         return total;
     }
 }
