@@ -5,18 +5,16 @@ public class Ingredient {
     private String name;
     private Double price;
     private CategoryEnum category;
-    private Double requiredQuantity;
-    private Dish dish;
+    private Double requiredQuantity; // quantité spécifique pour un plat
 
     public Ingredient() {}
 
-    public Ingredient(Integer id, String name, CategoryEnum category, Double price, Double requiredQuantity, Dish dish) {
+    public Ingredient(Integer id, String name, CategoryEnum category, Double price, Double requiredQuantity) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.price = price;
         this.requiredQuantity = requiredQuantity;
-        this.dish = dish;
     }
 
     public Integer getId() { return id; }
@@ -33,9 +31,4 @@ public class Ingredient {
 
     public Double getRequiredQuantity() { return requiredQuantity; }
     public void setRequiredQuantity(Double requiredQuantity) { this.requiredQuantity = requiredQuantity; }
-
-    public Dish getDish() { return dish; }
-    public void setDish(Dish dish) { this.dish = dish; }
-
-    public String getDishName() { return dish != null ? dish.getName() : null; }
 }
