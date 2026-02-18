@@ -1,28 +1,29 @@
 package school.hei;
 
-import java.util.List;
+
+import java.time.Instant;
 
 public class MainTest {
 
-    public static void main(String[] args) {
-        DataRetriever dr = new DataRetriever();
+    public static void main(String[] args){
 
-        try {
-            Dish d = dr.findDishById(1);
-            System.out.println("Dish 1 : "+d.getName());
-            for (Ingredient i:d.getIngredients()) System.out.println("- "+i.getName());
-            System.out.println("DishCost : "+d.getDishCost());
-            try {
-                System.out.println("Marge brute : "+d.getCrossMargin());
-            } catch(RuntimeException e){ System.out.println("Erreur marge : "+e.getMessage()); }
-        } catch(RuntimeException e){ System.out.println("Erreur a) "+e.getMessage()); }
+        DataRetriever dr=new DataRetriever();
 
-        try { dr.findDishById(999); } catch(RuntimeException e){ System.out.println("b) Exception attendue : "+e.getMessage()); }
+        Dish d=dr.findDishById(1);
+        System.out.println(d.getName());
+        System.out.println("Cost="+d.getDishCost());
 
-        List<Ingredient> page2 = dr.findIngredients(2,2);
-        System.out.println("Page 2, size 2 :"); for(Ingredient i:page2) System.out.println("- "+i.getName());
+        Ingredient i=dr.findIngredients(1,1).get(0);
+        System.out.println(i.getStockValueAt(Instant.parse("2024-01-06T12:00:00Z")).getQuantity());
 
-        List<Dish> dishesWithEur = dr.findDishesByIngredientName("eur");
-        System.out.println("Plats contenant 'eur' :"); for(Dish d:dishesWithEur) System.out.println("- "+d.getName());
+        Order o=dr.findOrderByReference("REF001");
+        o.setStatus(OrderStatusEnum.DELIVERED);
+        dr.saveOrder(o);
+
+        try{
+            dr.saveOrder(o);
+        }catch(Exception e){
+            System.out.println("BLOCK DELIVERED OK");
+        }
     }
 }

@@ -10,11 +10,10 @@ public class DBConnection {
     private static final String PASSWORD = "1234";
 
     public Connection getConnection() {
-        try { return DriverManager.getConnection(JDBC_URL, USER, PASSWORD); }
-        catch (SQLException e) { throw new RuntimeException("Impossible de se connecter", e); }
-    }
-
-    public void closeConnection(Connection c) {
-        if (c != null) try { c.close(); } catch (SQLException ignored) {}
+        try {
+            return DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            throw new RuntimeException("Impossible de se connecter", e);
+        }
     }
 }
